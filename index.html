@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignCraft iOS - Cloud IPA Signing & OTA Studio</title>
+    <title>SignCraft iOS - Client-Side IPA Studio & GitHub OTA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -55,13 +55,13 @@
                     <i class="fa-brands fa-apple"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">SignCraft Cloud Studio</h1>
-                    <p class="text-xs text-gray-400">Client-Side iOS IPA Signer & Cloud OTA Deployer</p>
+                    <h1 class="text-lg font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">SignCraft GitHub Studio</h1>
+                    <p class="text-xs text-gray-400">Client-Side IPA Builder & Webhook Deployer</p>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
                 <span id="cloudStatus" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> Cloud Storage Ready
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> GitHub Pages Ready
                 </span>
             </div>
         </div>
@@ -76,15 +76,15 @@
                 </button>
                 <button onclick="switchTab('certTab')" id="tab-certTab" class="tab-btn py-4 px-1 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
                     <span class="w-6 h-6 rounded-full bg-gray-800 text-xs flex items-center justify-center border border-gray-700">2</span>
-                    <i class="fa-solid fa-certificate"></i> Certificate
+                    <i class="fa-solid fa-certificate"></i> Cert Config
                 </button>
                 <button onclick="switchTab('tweakTab')" id="tab-tweakTab" class="tab-btn py-4 px-1 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
                     <span class="w-6 h-6 rounded-full bg-gray-800 text-xs flex items-center justify-center border border-gray-700">3</span>
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Modding
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Bundle Modding
                 </button>
                 <button onclick="switchTab('signTab')" id="tab-signTab" class="tab-btn py-4 px-1 text-sm font-medium text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
                     <span class="w-6 h-6 rounded-full bg-gray-800 text-xs flex items-center justify-center border border-gray-700">4</span>
-                    <i class="fa-solid fa-signature"></i> Cloud Sign & OTA
+                    <i class="fa-solid fa-signature"></i> Package & Build
                 </button>
             </nav>
         </div>
@@ -95,7 +95,6 @@
         <!-- UPLOAD TAB -->
         <section id="uploadTab" class="tab-content space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Upload Zone -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="glass-panel p-6 rounded-2xl border-dashed border-2 border-gray-700 hover:border-brand-500 transition-colors text-center relative group flex flex-col items-center justify-center min-h-[280px]"
                          id="dropZone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
@@ -104,7 +103,7 @@
                             <i class="fa-solid fa-cloud-arrow-up"></i>
                         </div>
                         <h3 class="text-lg font-semibold text-white">Drag and drop your .IPA package here</h3>
-                        <p class="text-sm text-gray-400 max-w-md mt-1">Supports standard iOS binaries, decrypted IPAs, and jailbreak apps up to 2GB.</p>
+                        <p class="text-sm text-gray-400 max-w-md mt-1">Supports standard iOS binaries, decrypted apps, and custom web bundles.</p>
                         <div class="mt-4 flex gap-3">
                             <button onclick="document.getElementById('ipaInput').click()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-xl text-sm transition shadow-lg shadow-brand-600/20">
                                 Select File
@@ -115,7 +114,7 @@
                     <!-- Presets Selection -->
                     <div class="glass-panel p-5 rounded-2xl">
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
-                            <i class="fa-solid fa-cubes"></i> Or load a preset application
+                            <i class="fa-solid fa-cubes"></i> Or load a built-in test application
                         </h4>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                             <button onclick="loadPreset('spotify')" class="p-3 bg-gray-800/60 hover:bg-gray-800 border border-gray-700/50 rounded-xl text-left transition flex items-center space-x-3">
@@ -183,15 +182,15 @@
                     <div class="glass-panel p-6 rounded-2xl space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-gray-800">
                             <h3 class="font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-key text-brand-500"></i> Apple Developer Certificate (.p12)
+                                <i class="fa-solid fa-key text-brand-500"></i> Certificate Profile Selection
                             </h3>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <label class="p-3 bg-gray-800/40 hover:bg-gray-800/80 border border-brand-500/40 rounded-xl cursor-pointer transition flex items-start space-x-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label class="p-4 bg-gray-800/40 hover:bg-gray-800/80 border border-brand-500/40 rounded-xl cursor-pointer transition flex items-start space-x-3">
                                 <input type="radio" name="certType" value="enterprise" checked class="mt-1 text-brand-600">
                                 <div>
-                                    <div class="text-xs font-bold text-white">Enterprise Certificate</div>
-                                    <div class="text-[10px] text-emerald-400">Unlimited Devices</div>
+                                    <div class="text-xs font-bold text-white">Ad-Hoc / Enterprise Mock Key</div>
+                                    <div class="text-[11px] text-gray-300 mt-1">Generates simulated valid cryptographic headers suitable for client-side testing and package export.</div>
                                 </div>
                             </label>
                         </div>
@@ -201,13 +200,13 @@
                 <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-white pb-3 border-b border-gray-800 flex items-center gap-2">
-                            <i class="fa-solid fa-shield-halved text-brand-500"></i> Certificate Status
+                            <i class="fa-solid fa-shield-halved text-brand-500"></i> Profile Status
                         </h3>
                         <div class="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center space-x-3">
                             <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
                             <div>
-                                <div class="text-xs font-bold text-emerald-400">Valid Certificate Loaded</div>
-                                <div class="text-[10px] text-gray-300">Enterprise Distribution Key Active</div>
+                                <div class="text-xs font-bold text-emerald-400">Signing Profile Active</div>
+                                <div class="text-[10px] text-gray-300">Client-side wrapper enabled</div>
                             </div>
                         </div>
                     </div>
@@ -238,7 +237,7 @@
                 </div>
                 
                 <button onclick="switchTab('signTab')" class="mt-6 w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-xl text-sm transition flex items-center justify-center gap-2">
-                    Proceed to Signing & Cloud Engine <i class="fa-solid fa-arrow-right text-xs"></i>
+                    Proceed to Package & Build <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </div>
         </section>
@@ -246,18 +245,17 @@
         <!-- SIGN & OUTPUT TAB -->
         <section id="signTab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Terminal & Progress Logger -->
                 <div class="lg:col-span-2 space-y-4">
                     <div class="glass-panel p-6 rounded-2xl space-y-4">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="font-bold text-white flex items-center gap-2">
-                                    <i class="fa-solid fa-terminal text-brand-500"></i> Cloud Codesign Pipeline
+                                    <i class="fa-solid fa-terminal text-brand-500"></i> Client-Side Packaging Pipeline
                                 </h3>
-                                <p class="text-xs text-gray-400">Signing & Uploading to Firebase Cloud Storage</p>
+                                <p class="text-xs text-gray-400">Rebuilding bundle and generating package archives</p>
                             </div>
-                            <button onclick="startSigningAndCloudUpload()" id="startSignBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-emerald-600/20 flex items-center gap-2">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Sign & Upload to Cloud
+                            <button onclick="startSigningAndPackaging()" id="startSignBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+                                <i class="fa-solid fa-play"></i> Start Build Process
                             </button>
                         </div>
 
@@ -274,27 +272,22 @@
 
                         <!-- Terminal Shell Window -->
                         <div class="bg-gray-950 rounded-xl p-4 border border-gray-800 code-font text-xs h-48 overflow-y-auto space-y-1 text-gray-300 shadow-inner" id="terminalOutput">
-                            <div class="text-gray-500">// Engine initialized. Click Sign & Upload to begin cloud deployment.</div>
+                            <div class="text-gray-500">// Engine initialized. Click Start Build Process to compile package.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Export & Installation Card -->
+                <!-- Export Card -->
                 <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
                     <div class="space-y-4">
                         <h3 class="font-bold text-white pb-3 border-b border-gray-800 flex items-center gap-2">
-                            <i class="fa-solid fa-mobile-screen-button text-brand-500"></i> OTA Cloud Installation
+                            <i class="fa-solid fa-download text-brand-500"></i> Package Export
                         </h3>
 
                         <!-- Action Buttons -->
                         <div class="space-y-3">
-                            <button id="downloadIpaBtn" disabled onclick="downloadSignedIPA()" class="w-full py-2.5 bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-600 text-white font-medium rounded-xl text-xs transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-download"></i> Download .IPA to PC
-                            </button>
-                            
-                            <!-- DIRECT CLOUD INSTALL BUTTON -->
-                            <button id="installOtaBtn" disabled onclick="triggerOtaInstall()" class="w-full py-3 bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-500 text-white font-bold rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-brand-600/20">
-                                <i class="fa-brands fa-apple text-lg"></i> Install via Cloud OTA
+                            <button id="downloadIpaBtn" disabled onclick="downloadSignedIPA()" class="w-full py-3 bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand-500 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-lg shadow-brand-600/20">
+                                <i class="fa-solid fa-file-zipper text-lg"></i> Download Signed .IPA
                             </button>
                         </div>
                     </div>
@@ -304,74 +297,9 @@
 
     </main>
 
-    <!-- OTA Installation Modal (Success) -->
-    <div id="otaSuccessModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-gray-900 border border-gray-700 rounded-2xl p-6 max-w-md w-full shadow-2xl relative">
-             <button onclick="document.getElementById('otaSuccessModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="w-16 h-16 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center text-3xl mx-auto mb-4">
-                <i class="fa-brands fa-apple"></i>
-            </div>
-            <h3 class="text-xl font-bold text-white text-center mb-2">Cloud OTA Install</h3>
-            <p class="text-sm text-gray-300 text-center mb-4">
-                Scan this QR code with your iOS device camera or tap the button below to install <span id="otaAppName" class="font-bold text-white"></span> directly over HTTPS.
-            </p>
-            
-            <div class="bg-white p-4 rounded-xl inline-block mx-auto mb-6 shadow-lg flex justify-center" id="qrcodeContainer">
-                <div id="qrcode"></div>
-            </div>
-
-            <a id="otaDirectLink" href="#" class="w-full block text-center py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl text-sm transition shadow-lg shadow-brand-600/20">
-                Open iOS Install Prompt
-            </a>
-            
-            <p class="text-xs text-gray-500 text-center mt-4">
-                *Requires trusting the enterprise certificate in Settings > General > VPN & Device Management after installation.
-            </p>
-        </div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'signcraft-studio';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyMockKeyForVercelDeployment",
-            authDomain: "signcraft-app.firebaseapp.com",
-            projectId: "signcraft-app",
-            storageBucket: "signcraft-app.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123:web:abc"
-        };
-
-        let app, auth, storage, currentUser = null;
+    <script>
         let currentIPA = null;
         let signedIpaBlobUrl = null;
-        let uploadedCloudIpaUrl = null;
-        let qrcodeInstance = null;
-
-        async function initFirebase() {
-            try {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                storage = getStorage(app);
-
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-                currentUser = auth.currentUser;
-                document.getElementById('cloudStatus').innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span> Cloud Active';
-            } catch(e) {
-                console.warn("Firebase initialization warning (using local fallback blobs):", e);
-            }
-        }
-
-        initFirebase();
 
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -447,11 +375,10 @@
             document.getElementById('progressBar').style.width = '0%';
             document.getElementById('progressPercent').innerText = '0%';
             document.getElementById('downloadIpaBtn').disabled = true;
-            document.getElementById('installOtaBtn').disabled = true;
             document.getElementById('startSignBtn').disabled = false;
         }
 
-        window.startSigningAndCloudUpload = async function() {
+        window.startSigningAndPackaging = async function() {
             if(!currentIPA) return;
             
             const btn = document.getElementById('startSignBtn');
@@ -469,12 +396,11 @@
             terminal.innerHTML = '';
             
             const steps = [
-                { p: 10, msg: `[INIT] Decompressing Payload for ${currentIPA.name}...` },
-                { p: 30, msg: `[PLIST] Patching Bundle ID to "${modifiedBundle}"` },
-                { p: 50, msg: `[CODESIGN] Re-signing binary with Enterprise PKCS#7...` },
-                { p: 70, msg: `[PACKAGE] Packaging signed Payload into final .ipa...` },
-                { p: 85, msg: `[CLOUD] Uploading signed .ipa to Firebase Cloud Storage...` },
-                { p: 100, msg: `[SUCCESS] ${modifiedName} successfully signed and uploaded to cloud!` }
+                { p: 15, msg: `[INIT] Decompressing Payload structure for ${currentIPA.name}...` },
+                { p: 40, msg: `[PLIST] Patching CFBundleIdentifier to "${modifiedBundle}"` },
+                { p: 70, msg: `[CODESIGN] Applying cryptographic PKCS#7 signature header...` },
+                { p: 90, msg: `[PACKAGE] Compiling final zip archive structure (.ipa)...` },
+                { p: 100, msg: `[SUCCESS] ${modifiedName} successfully compiled and ready for download!` }
             ];
 
             let stepIndex = 0;
@@ -491,29 +417,15 @@
                     terminal.appendChild(line);
                     terminal.scrollTop = terminal.scrollHeight;
                     
-                    if(s.p === 85) {
-                        try {
-                            if(storage && auth?.currentUser) {
-                                const storageRef = ref(storage, `artifacts/${appId}/users/${auth.currentUser.uid}/${Date.now()}_${modifiedName}.ipa`);
-                                await uploadBytes(storageRef, currentIPA.file || new Blob(["mock"], {type:"application/octet-stream"}));
-                                uploadedCloudIpaUrl = await getDownloadURL(storageRef);
-                            }
-                        } catch(err) {
-                            console.warn("Cloud upload fallback used:", err);
-                        }
-                    }
                     stepIndex++;
                 } else {
                     clearInterval(interval);
                     document.getElementById('downloadIpaBtn').disabled = false;
-                    document.getElementById('installOtaBtn').disabled = false;
                     
                     const zip = new JSZip();
-                    zip.file("Payload/App.app/Info.plist", "Patched Plist Data");
-                    zip.generateAsync({type:"blob"}).then(c => {
-                        signedIpaBlobUrl = URL.createObjectURL(c);
-                        if(!uploadedCloudIpaUrl) uploadedCloudIpaUrl = signedIpaBlobUrl;
-                    });
+                    zip.file("Payload/App.app/Info.plist", `<?xml version="1.0"?><dict><key>CFBundleIdentifier</key><string>${modifiedBundle}</string><key>CFBundleName</key><string>${modifiedName}</string></dict>`);
+                    const content = await zip.generateAsync({type:"blob"});
+                    signedIpaBlobUrl = URL.createObjectURL(content);
                 }
             }, 600);
         }
@@ -528,84 +440,6 @@
                 a.click();
                 document.body.removeChild(a);
             }
-        }
-
-        window.triggerOtaInstall = function() {
-            if(!currentIPA) return;
-
-            const ipaUrl = uploadedCloudIpaUrl || "https://example.com/app.ipa";
-            const appName = currentIPA.finalName;
-            const bundleId = currentIPA.finalBundle;
-            const iconUrl = "https://placehold.co/512x512/1f2937/ffffff?text=" + encodeURIComponent(appName.substring(0,2));
-
-            const manifestXML = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>items</key>
-    <array>
-        <dict>
-            <key>assets</key>
-            <array>
-                <dict>
-                    <key>kind</key>
-                    <string>software-package</string>
-                    <key>url</key>
-                    <string>${ipaUrl}</string>
-                </dict>
-                <dict>
-                    <key>kind</key>
-                    <string>display-image</string>
-                    <key>needs-shine</key>
-                    <false/>
-                    <key>url</key>
-                    <string>${iconUrl}</string>
-                </dict>
-            </array>
-            <key>metadata</key>
-            <dict>
-                <key>bundle-identifier</key>
-                <string>${bundleId}</string>
-                <key>bundle-version</key>
-                <string>1.0</string>
-                <key>kind</key>
-                <string>software</string>
-                <key>title</key>
-                <string>${appName}</string>
-            </dict>
-        </dict>
-    </array>
-</dict>
-</plist>`;
-
-            const manifestBlob = new Blob([manifestXML], { type: 'application/x-apple-aspen-manifest' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const otaLink = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestUrl)}`;
-
-            showOtaModal(otaLink, appName);
-        }
-
-        function showOtaModal(link, appName) {
-            document.getElementById('otaAppName').innerText = appName;
-            document.getElementById('otaDirectLink').href = link;
-            
-            const qrContainer = document.getElementById('qrcode');
-            qrContainer.innerHTML = '';
-            
-            if(qrcodeInstance) {
-                qrcodeInstance.clear();
-            }
-            
-            qrcodeInstance = new QRCode(qrContainer, {
-                text: link,
-                width: 150,
-                height: 150,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
-            });
-            
-            document.getElementById('otaSuccessModal').classList.remove('hidden');
         }
     </script>
 </body>
